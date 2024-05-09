@@ -1,0 +1,12 @@
+{% set w = int((len(weather.play_condition.message) - len(datetime.fromtimestamp(weather.dt).strftime(format = '%A %I:%M %p')))-1) %}
+╭─ {{ datetime.fromtimestamp(weather.dt).strftime(format = '%A %I:%M %p')}} {{ '─'*w }}╮
+│ {%if color %}{{ weather.play_condition.ansi_color }}{%endif%}{{ weather.play_condition.message | safe }}{%if color%}\033[0m{%endif%} │
+╰─{{ '─'* len(weather.play_condition.message) }}─╯
+{{ weather.name }}
+Feels Like: {{ weather.main.feels_like }}
+Air Quality: {{ air_quality.list.0.main.aqi }}
+Sunset: {{ datetime.fromtimestamp(sunset).strftime(format = '%I:%M %p') }}
+Visibility: {{ weather.visibility }}
+{% if weather.wind.speed > 5 -%}
+Wind Speed: {{ weather.wind.speed }}
+{% endif -%}

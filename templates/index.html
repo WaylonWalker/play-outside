@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+    <h2 class='block mt-24 text-3xl font-black text-center'>Currently</h2>
+    <ul class='list-none'>
+        {% include "card.html" %}
+    </ul>
+    <h2 class='block mt-24 text-3xl font-black text-center'>5 Day Forecast</h2>
+    <ul class='list-none'>
+        {% for weather in forecast %}
+            {% include "card.html" %}
+        {% endfor %}
+    </ul>
+{% endblock %}

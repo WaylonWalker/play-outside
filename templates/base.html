@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+            <title>
+                {% block title %}Play Outside{% endblock %}
+            </title>
+            <link rel="icon" type="image/x-icon" href="{{ url_for('get_favicon') }}" />
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta name="og:title" name="og:title" content="Can I Play Outside" />
+            <meta name="twitter:title" name="twitter:title" content="Can I Play Outside" />
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="og:image" name="og:image"
+                  content="https://shots.wayl.one/shot/?url=https://play-outside.wayl.one&height=1080&width=1920&scaled_width=1200&scaled_height=600&selectors=" />
+            <meta name="twitter:image" name="twitter:image"
+                  content="https://shots.wayl.one/shot/?url=https://play-outside.wayl.one&height=1080&width=1920&scaled_width=1280&scaled_height=640&selectors=" />
+            <meta name="og:image:height" content="640" />
+            <meta name="og:image:width" content="1280" />
+            <meta name="og:url" name="og:url" content="https://waylonwalker.com" />
+            <meta name="description" name="description"
+                  content="Check if my kids can play outside" />
+            <meta name="og:description" name="Check if my kids can play outside"
+                  content="Check if my kids can play outside" />
+            <meta name="twitter:description" name="twitter:description"
+                  content="Check if my kids can play outside" />
+
+            <link href="{{ url_for('get_app_css') }}" rel="stylesheet" />
+            <!-- <script src="{{ url_for('get_htmx') }}"></script> -->
+
+            {% if config.env == 'local' %}
+                {{ hot_reload.script(url_for('hot-reload') ) | safe }}
+            {% endif %}
+        {% endblock %}
+    </head>
+    <body >
+        <div class='p-4 bg-zinc-900 text-zinc-100 autofill:bg-yellow-500'>
+            <h2 class='mx-auto max-w-4xl'>
+                Disclaimer
+            </h2>
+            <p class='mx-auto max-w-4xl'>
+                I use this site to determine if my kids can play outside, each kid is different, use your own discretion before allowing kids outside.
+            </p>
+        </div>
+        {% block body %}
+            {{ content | safe }}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,4 @@
+{% include "card.txt" %}
+{% for weather in forecast %}
+    {% include "card.txt" %}
+{% endfor %}

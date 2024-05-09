@@ -1,0 +1,70 @@
+{% if datetime.fromtimestamp(weather.dt).hour == 6 %}
+</ul>
+<hr>
+<h2 class='block mt-24 text-3xl font-black text-center'>
+    {{ datetime.fromtimestamp(weather.dt).strftime(format = '%A') }}
+    <br>
+    <span class='text-xl'>
+        {{ datetime.fromtimestamp(weather.dt).strftime(format = '%Y-%m-%d') }}
+    </span>
+</h2>
+
+
+<ul class='list-none'>
+    {% endif %}
+    <li <p class='text-center'>
+        {{ datetime.fromtimestamp(weather.dt).strftime(format = '%I:%M %p') }}
+        </p>
+        <div
+            class='container p-4 my-4 mx-auto max-w-3xl list-none rounded-3xl border-2 {{ weather.play_condition.color.replace("bg-", "border-") }} {{ weather.play_condition.color }} bg-opacity-10'>
+            <h1 id="title"
+                class="inline-block pb-0 mx-auto mb-0 text-xl text-8xl font-black leading-tight leading-loose text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-pink-500 to-yellow-400 ring-red-500 text-shadow-xl text-shadow-zinc-950 ring-5">
+
+                {{ weather.play_condition.message.replace('.', '<br />') | safe }}
+            </h1>
+
+            <p>
+                {{ weather.name }}
+            </p>
+            <p>
+                Feels Like: {{ weather.main.feels_like }}
+            </p>
+            <ul class='list-none'>
+                {% for w in weather.weather %}
+                <li>
+                    <p>
+                        {{ w.description }}
+                        <img src='https://openweathermap.org/img/wn/{{ w.icon }}.png' class='inline-block my-[-1rem]' />
+                    </p>
+                </li>
+                {% endfor %}
+            </ul>
+            <p>
+                Air Quality: {{ air_quality.list.0.main.aqi }}
+            </p>
+            <p>
+                Sunset: {{ datetime.fromtimestamp(sunset) }}
+            </p>
+            {% if weather.sys.sunset %}
+            {% if (datetime.fromtimestamp(weather.sys.sunset) - datetime.fromtimestamp(weather.dt)).total_seconds() > 0
+            %}
+
+            <p>
+                Time till sunset: {{ datetime.fromtimestamp(weather.sys.sunset) - datetime.fromtimestamp(weather.dt) }}
+            </p>
+            {% else %}
+            <p>
+                Its after sunset
+            </p>
+            {% endif %}
+            {% endif %}
+            <p>
+                Visibility: {{ weather.visibility }}
+            </p>
+            {% if weather.wind.speed > 5 %}
+            <p>
+                Wind Speed: {{ weather.wind.speed }}
+            </p>
+            {% endif %}
+        </div>
+    </li>
