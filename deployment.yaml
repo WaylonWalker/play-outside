@@ -1,0 +1,137 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o deployment.yaml -n play-outside --replicas 3
+    kompose.image-pull-secret: regcred
+    kompose.service.expose: play-outside.wayl.one
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: play-outside-wayl-one
+  name: play-outside-wayl-one
+  namespace: play-outside
+spec:
+  ports:
+    - name: "8200"
+      port: 8200
+      targetPort: 8200
+  selector:
+    io.kompose.service: play-outside-wayl-one
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: play-outside
+  namespace: play-outside
+spec: {}
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o deployment.yaml -n play-outside --replicas 3
+    kompose.image-pull-secret: regcred
+    kompose.service.expose: play-outside.wayl.one
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: play-outside-wayl-one
+  name: play-outside-wayl-one
+  namespace: play-outside
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: play-outside-wayl-one
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o deployment.yaml -n play-outside --replicas 3
+        kompose.image-pull-secret: regcred
+        kompose.service.expose: play-outside.wayl.one
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/play-outside-default: "true"
+        io.kompose.service: play-outside-wayl-one
+    spec:
+      containers:
+        - env:
+            - name: PLAY_OUTSIDE_API_SERVER__RELOAD
+              valueFrom:
+                configMapKeyRef:
+                  key: PLAY_OUTSIDE_API_SERVER__RELOAD
+                  name: tank-git-play-outside--env-prod
+            - name: PLAY_OUTSIDE_API_SERVER__WORKERS
+              valueFrom:
+                configMapKeyRef:
+                  key: PLAY_OUTSIDE_API_SERVER__WORKERS
+                  name: tank-git-play-outside--env-prod
+            - name: PLAY_OUTSIDE_OPEN_WEATHER_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: PLAY_OUTSIDE_OPEN_WEATHER_API_KEY
+                  name: tank-git-play-outside--env-prod
+          image: registry.wayl.one/play-outside:0.0.28
+          name: play-outside-wayl-one
+          ports:
+            - containerPort: 8200
+              protocol: TCP
+          resources: {}
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+status: {}
+
+---
+apiVersion: v1
+data:
+  PLAY_OUTSIDE_API_SERVER__RELOAD: "false"
+  PLAY_OUTSIDE_API_SERVER__WORKERS: "3"
+  PLAY_OUTSIDE_OPEN_WEATHER_API_KEY: e7ccca0fbe4e63b22c08de44bc1fee56
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: play-outside-wayl-one-tank-git-play-outside--env-prod
+  name: tank-git-play-outside--env-prod
+  namespace: play-outside
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o deployment.yaml -n play-outside --replicas 3
+    kompose.image-pull-secret: regcred
+    kompose.service.expose: play-outside.wayl.one
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: play-outside-wayl-one
+  name: play-outside-wayl-one
+  namespace: play-outside
+spec:
+  rules:
+    - host: play-outside.wayl.one
+      http:
+        paths:
+          - backend:
+              service:
+                name: play-outside-wayl-one
+                port:
+                  number: 8200
+            path: /
+            pathType: Prefix
+status:
+  loadBalancer: {}
+

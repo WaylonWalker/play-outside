@@ -1,0 +1,12 @@
+version: "3"
+services:
+  play-outside-wayl-one:
+    image: registry.wayl.one/play-outside:0.0.28
+    ports:
+      - 8200
+    env_file:
+      - .env.prod
+    restart: always
+    labels:
+      kompose.service.expose: play-outside.wayl.one
+      kompose.image-pull-secret: regcred
